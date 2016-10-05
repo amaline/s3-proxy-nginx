@@ -18,7 +18,7 @@ dependencies:
     - echo '---' >> sources.yml
     - echo -n '- url:' >> sources.yml
     - echo ${NXURL} >> sources.yml
-    - echo -n '  sha256: ' >> sources.yml
+    - echo '  sha256: ' >> sources.yml
     - tar cvf ${CIRCLE_ARTIFACTS}/nginx-s3.tar sources.yml nginx
     
 
