@@ -5,7 +5,6 @@ machine:
     NXAUTHMODULEREP: https://github.com/amaline/ngx_aws_auth.git
 
 dependencies:
-
    override:
     - sudo apt-get -y install curl build-essential libpcre3 libpcre3-dev zlib1g-dev libssl-dev git 
     - curl -LO ${NXURL}
@@ -23,10 +22,13 @@ dependencies:
     - sha256sum nginx-${NXVERSION}.tar.gz | cut -f 1 -d ' ' >> sources.yml
     - tar cvf ${CIRCLE_ARTIFACTS}/nginx-s3.tar sources.yml nginx
     
-
+database:
+  override:
+   - nginx/sbin/nginx -p `pwd`/ -c test.conf
+   
 test:
   override:
-     - echo test
+     - curl http://localhost:4945/
 
 
 deployment:
