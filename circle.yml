@@ -16,7 +16,8 @@ dependencies:
     - mkdir nginx && mkdir nginx/conf && mkdir nginx/logs && mkdir nginx/sbin 
     - cp nginx-${NXVERSION}/objs/nginx nginx/sbin
     - echo '---' >> sources.yml
-    - echo '- url:' >> sources.yml
+    - echo -n '- url:' >> sources.yml
+    - echo ${NXURL} >> sources.yml
     - tar cvf ${CIRCLE_ARTIFACTS}/nginx-s3.tar sources.yml nginx
     
 
