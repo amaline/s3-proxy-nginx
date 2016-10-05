@@ -2,6 +2,7 @@ machine:
   environment:
     NXVERSION: 1.11.4
     NXURL: http://nginx.org/download/nginx-1.11.4.tar.gz
+    NXAUTHMODULEREP: https://github.com/amaline/ngx_aws_auth.git
 
 dependencies:
 
@@ -9,12 +10,17 @@ dependencies:
     - sudo apt-get -y install curl build-essential libpcre3 libpcre3-dev zlib1g-dev libssl-dev git 
     - curl -LO ${NXURL}
     - tar zxf nginx-${NXVERSION}.tar.gz 
-    - cd nginx-${NXVERSION} && git clone https://github.com/amaline/ngx_aws_auth.git && ls -l
+    - cd nginx-${NXVERSION} && git clone ${NXAUTHMODULEREP} 
     - cd nginx-${NXVERSION} && ./configure --with-http_ssl_module --add-module=ngx_aws_auth
     - cd nginx-${NXVERSION} && make 
-    - cd nginx-${NXVERSION} && mkdir nginx && mkdir nginx/conf && mkdir nginx/logs && mkdir nginx/sbin 
-    - cd nginx-${NXVERSION} && cp objs/nginx nginx/sbin
-    - sha256sum nginx-${NXVERSION}.tar.gz
+    - mkdir nginx && mkdir nginx/conf && mkdir nginx/logs && mkdir nginx/sbin 
+    - cp nginx-${NXVERSION}/objs/nginx nginx/sbin
+    - echo "---" > sources.yml
+    - echo "- url: ${NXURL}" >> sources.yml
+    - echo -n "  sha256: " >> sources.yml
+    - sha256sum nginx-${NXVERSION}.tar.gz | cut -f 1 -d ' ' >> sources.yml
+    - tar cvf ${CIRCLE_ARTIFACTS}/nginx-s3.tar sources.yml nginx
+    
 
 test:
   override:
