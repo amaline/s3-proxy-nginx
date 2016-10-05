@@ -7,6 +7,7 @@ dependencies:
     - cd nginx-1.11.4 && git clone https://github.com/amaline/ngx_aws_auth.git && ls -l
     - cd nginx-1.11.4 && ./configure --with-http_ssl_module --add-module=ngx_aws_auth
     - cd nginx-1.11.4 && make 
+    - cd nginx-1.11.4 && ls -l
 
 test:
   override:
