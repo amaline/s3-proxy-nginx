@@ -1,13 +1,20 @@
+machine:
+  environment:
+    NXVERSION: 1.11.4
+    NXURL: http://nginx.org/download/nginx-1.11.4.tar.gz
+
 dependencies:
 
    override:
     - sudo apt-get -y install curl build-essential libpcre3 libpcre3-dev zlib1g-dev libssl-dev git 
-    - curl -LO http://nginx.org/download/nginx-1.11.4.tar.gz
-    - tar zxf nginx-1.11.4.tar.gz 
-    - cd nginx-1.11.4 && git clone https://github.com/amaline/ngx_aws_auth.git && ls -l
-    - cd nginx-1.11.4 && ./configure --with-http_ssl_module --add-module=ngx_aws_auth
-    - cd nginx-1.11.4 && make 
-    - cd nginx-1.11.4 && ls -l && ls -l objs
+    - curl -LO ${NXURL}
+    - tar zxf nginx-${NXVERSION}.tar.gz 
+    - cd nginx-${NXVERSION} && git clone https://github.com/amaline/ngx_aws_auth.git && ls -l
+    - cd nginx-${NXVERSION} && ./configure --with-http_ssl_module --add-module=ngx_aws_auth
+    - cd nginx-${NXVERSION} && make 
+    - cd nginx-${NXVERSION} && mkdir nginx && mkdir nginx/conf && mkdir nginx/logs && mkdir nginx/sbin 
+    - cd nginx-${NXVERSION} && cp objs/nginx nginx/sbin
+    - sha256sum nginx-${NXVERSION}.tar.gz
 
 test:
   override:
