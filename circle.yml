@@ -14,8 +14,9 @@ dependencies:
     - cd nginx-${NXVERSION} && ./configure --with-http_ssl_module --add-module=ngx_aws_auth
     - cd nginx-${NXVERSION} && make 
     - mkdir nginx && mkdir nginx/conf && mkdir nginx/logs && mkdir nginx/sbin 
-    - cp nginx-${NXVERSION}/objs/nginx nginx/sbin  
-    - tar cvf ${CIRCLE_ARTIFACTS}/nginx-s3.tar  nginx
+    - cp nginx-${NXVERSION}/objs/nginx nginx/sbin
+    - echo '---' >> sources.yml
+    - tar cvf ${CIRCLE_ARTIFACTS}/nginx-s3.tar sources.yml nginx
     
 
 test:
