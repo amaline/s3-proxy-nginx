@@ -23,7 +23,7 @@ dependencies:
     - echo -n '  sha256:' >> sources.yml
     - echo -n ' ' >> sources.yml
     - sha256sum nginx-${NXVERSION}.tar.gz | cut -f 1 -d ' ' >> sources.yml
-    - tar cvf ${CIRCLE_ARTIFACTS}/nginx-s3.tar sources.yml nginx
+    - tar cvzf ${CIRCLE_ARTIFACTS}/nginx-s3.tgz sources.yml nginx
     
 database:
   override:
@@ -38,9 +38,5 @@ deployment:
   hub:
     branch: master
     commands:
-       - git tag $GITHUB_RELEASE
-       - git push https://${GITHUB_TOKEN}:@${PROJECT_REPOSITORY} --tags
-       - echo {"tag_name":"${GITHUB_RELEASE}","target_commitish":"master","name":"CircleCI s3-proxy-nginx build process","body":"Release of nginx compiled version for custom cloud foundry buildpack","draft":false,"prerelease":true} > json.json
-       - curl -# -XPOST -H 'Content-Type:application/json' -H 'Accept:application/json' --data-binary @json.json https://api.github.com/repos/${GITHUB_PROJECT}/releases?access_token=${GITHUB_TOKEN} -o response.json
-       - cp response.json ${CIRCLE_ARTIFACTS}
-       - curl -# -XPOST -H "Authorization:${GITHUB_TOKEN}" -H "Content-Type:application/octet-stream" --data-binary @${CIRCLE_ARTIFACTS}/nginx-s3.tar https://uploads.github.com/repos/${GITHUB_PROJECT}/releases/%id_release%/assets?name=yourbinary.exe
+       - (git rev-parse ${GITHUB_RELEASE} || ( git tag ${GITHUB_RELEASE} && git push https://${GITHUB_TOKEN}:@${PROJECT_REPOSITORY} --tags)
+       - curl -# -XPOST -H "Authorization:${GITHUB_TOKEN}" -H "Content-Type:application/octet-stream" --data-binary @${CIRCLE_ARTIFACTS}/nginx-s3.tgz https://uploads.github.com/repos/${GITHUB_PROJECT}/releases/`git rev-parse ${GITHUB_RELEASE}`/assets?name=nginx-s3.tgz
