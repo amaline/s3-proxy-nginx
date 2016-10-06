@@ -6,6 +6,7 @@ machine:
     GITHUB_PROJECT: amaline/s3-proxy-nginx
     PROJECT_REPOSITORY: github.com/amaline/s3-proxy-nginx.git
     GITHUB_RELEASE: 0.1
+    ARTIFACT_NAME: nginx-s3-tgz
 
 dependencies:
    override:
@@ -23,7 +24,8 @@ dependencies:
     - echo -n '  sha256:' >> sources.yml
     - echo -n ' ' >> sources.yml
     - sha256sum nginx-${NXVERSION}.tar.gz | cut -f 1 -d ' ' >> sources.yml
-    - tar cvzf ${CIRCLE_ARTIFACTS}/nginx-s3.tgz sources.yml nginx
+    - tar cvzf ${CIRCLE_ARTIFACTS}/${ARTIFACT_NAME} sources.yml nginx
+    - chmod +x ./deploy.sh
     
 database:
   override:
@@ -38,5 +40,4 @@ deployment:
   hub:
     branch: master
     commands:
-       - (git rev-parse ${GITHUB_RELEASE} || ( git tag ${GITHUB_RELEASE} && git push https://${GITHUB_TOKEN}:@${PROJECT_REPOSITORY} --tags))
-       - curl -# -XPOST -H "Authorization:${GITHUB_TOKEN}" -H "Content-Type:application/octet-stream" --data-binary @${CIRCLE_ARTIFACTS}/nginx-s3.tgz https://uploads.github.com/repos/${GITHUB_PROJECT}/releases/`git rev-parse ${GITHUB_RELEASE}`/assets?name=nginx-s3.tgz
+       - deploy.sh
