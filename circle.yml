@@ -6,7 +6,7 @@ machine:
 
 dependencies:
    override:
-    - sudo apt-get -y install curl build-essential libpcre3 libpcre3-dev zlib1g-dev libssl-dev git 
+    - sudo apt-get -y install curl build-essential libpcre3 libpcre3-dev zlib1g-dev libssl-dev  
     - curl -LO ${NXURL}
     - tar zxf nginx-${NXVERSION}.tar.gz 
     - cd nginx-${NXVERSION} && git clone ${NXAUTHMODULEREP} 
