@@ -28,7 +28,7 @@ database:
    
 test:
   override:
-     - curl http://localhost:4945/
+     - diff -q <(curl http://localhost:4945/) index.html
 
 
 deployment:
