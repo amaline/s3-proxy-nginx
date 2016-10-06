@@ -40,4 +40,4 @@ deployment:
   hub:
     branch: master
     commands:
-       - deploy.sh
+       - ./deploy.sh
