@@ -3,6 +3,7 @@ machine:
     NXVERSION: 1.11.4
     NXURL: http://nginx.org/download/nginx-1.11.4.tar.gz
     NXAUTHMODULEREP: https://github.com/amaline/ngx_aws_auth.git
+    GITHUB_PROJECT: amaline/s3-proxy-nginx
     PROJECT_REPOSITORY: github.com/amaline/s3-proxy-nginx.git
     GITHUB_RELEASE: 0.1
 
@@ -39,3 +40,7 @@ deployment:
     commands:
        - git tag $GITHUB_RELEASE
        - git push https://${GITHUB_TOKEN}:@${PROJECT_REPOSITORY} --tags
+       - echo {"tag_name":"${GITHUB_RELEASE}","target_commitish":"master","name":"CircleCI s3-proxy-nginx build process","body":"Release of nginx compiled version for custom cloud foundry buildpack","draft":false,"prerelease":true} > json.json
+       - curl -# -XPOST -H 'Content-Type:application/json' -H 'Accept:application/json' --data-binary @json.json https://api.github.com/repos/${GITHUB_PROJECT}/releases?access_token=${GITHUB_TOKEN} -o response.json
+       - cp response.json ${CIRCLE_ARTIFACTS}
+       - curl -# -XPOST -H "Authorization:${GITHUB_TOKEN}" -H "Content-Type:application/octet-stream" --data-binary @${CIRCLE_ARTIFACTS}/nginx-s3.tar https://uploads.github.com/repos/${GITHUB_PROJECT}/releases/%id_release%/assets?name=yourbinary.exe
