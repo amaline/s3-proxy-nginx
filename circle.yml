@@ -3,6 +3,8 @@ machine:
     NXVERSION: 1.11.4
     NXURL: http://nginx.org/download/nginx-1.11.4.tar.gz
     NXAUTHMODULEREP: https://github.com/amaline/ngx_aws_auth.git
+    PROJECT_REPOSITORY: github.com/amaline/s3-proxy-nginx.git
+    GITHUB_RELEASE: 0.1
 
 dependencies:
    override:
@@ -28,11 +30,12 @@ database:
    
 test:
   override:
-     - diff -q <(curl http://localhost:4945/) index.html
+     - diff -q <(curl -s http://localhost:4945/) index.html
 
 
 deployment:
   hub:
     branch: master
     commands:
-       - echo deploy
+       - git tag $GITHUB_RELEASE
+       - git push https://${GITHUB_TOKEN}:${PROJECT_REPOSITORY} --tags
