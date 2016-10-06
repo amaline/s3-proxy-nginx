@@ -38,4 +38,4 @@ deployment:
     branch: master
     commands:
        - git tag $GITHUB_RELEASE
-       - git push https://${GITHUB_TOKEN}:${PROJECT_REPOSITORY} --tags
+       - git push https://${GITHUB_TOKEN}:@${PROJECT_REPOSITORY} --tags
