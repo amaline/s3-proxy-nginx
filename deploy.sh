@@ -14,15 +14,36 @@ git tag ${GITHUB_RELEASE}
 echo "Push tag to github repository ${GITHUB_PROJECT}"
 git push https://${GITHUB_TOKEN}@${PROJECT_REPOSITORY} --tags
 
-#echo "Create tag if it has not already been created"
-#(git rev-parse ${GITHUB_RELEASE} || ( git tag ${GITHUB_RELEASE} && git push https://${GITHUB_TOKEN}@${PROJECT_REPOSITORY} --tags))
+echo "Sleep 15 seconds for api to recognize tag because eventual consistancy I think... [race condition]"
+sleep 15
 
 echo "Creating release..."
 
+echo "  build create release json"
 echo -e "{\n\"tag_name\": \"${GITHUB_RELEASE}\",\n\"target_commitish\": \"master\",\n\"name\": \"release ${GITHUB_RELEASE} for custom nginx build\",\n\"body\": \"release ${GITHUB_RELEASE} for custom nginx build for cloud foundry s3 proxy\",\n\"draft\": false,\n\"prerelease\": false\n}" > json.json
-curl -# -XPOST -H 'Content-Type:application/json' -H 'Accept:application/json' --data-binary @json.json https://api.github.com/repos/${GITHUB_PROJECT}/releases?access_token=${GITHUB_TOKEN} -o response.json
-rm json.json
-RELEASE_ID=`cat response.json | jq '.id'`
 
+echo "  issuing command to github to create release"
+curl -# -XPOST -H 'Content-Type:application/json' -H 'Accept:application/json' --data-binary @json.json https://api.github.com/repos/${GITHUB_PROJECT}/releases?access_token=${GITHUB_TOKEN} -o response.json
+
+
+
+echo "  pulling release id from response"
+RELEASE_ID=`cat response.json | jq '.id'`
+if [ "$RELEASE_ID" == "null" ]
+then
+   echo -n "ERROR: No Release ID returned.  Returned message="
+   cat response.json |jq '.errors[0].message'
+   exit 100
+fi
+
+echo
 echo "Upload ${CIRCLE_ARTIFACTS}/${ASSET_NAME} to github release ${GITHUB_RELEASE} ID=${RELEASE_ID}"
+echo
+
 curl -# -XPOST -H "Authorization: bearer ${GITHUB_TOKEN}" -H "Content-Type: application/octet-stream" --data-binary @${CIRCLE_ARTIFACTS}/${ASSET_NAME} https://uploads.github.com/repos/${GITHUB_PROJECT}/releases/${RELEASE_ID}/assets?name=${ASSET_NAME}
+
+echo
+echo
+echo "Removing create release json command file and response file"
+rm json.json response.json
+echo "Job Complete"
