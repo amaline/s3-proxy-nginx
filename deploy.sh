@@ -1,4 +1,14 @@
 #!/bin/bash
+#
+#   PROGRAM: deploy.sh
+#   PURPOSE: Creates a github release and uploads nginx binary in gzip tar format to github
+#   EXIT CODES:
+#               128 - repository tag already exists.  update circle.yml with new version number.
+#               100 - no release ID was returned from github when release creation was attempted.
+#               200 - artifact upload failed
+#
+##################################################################################################################################
+
 echo "GITHUB_PROJECT    = $GITHUB_PROJECT"
 echo "GITHUB_RELEASE    = $GITHUB_RELEASE"
 echo "PROJECT_REPOSITORY= $PROJECT_REPOSITORY"
@@ -8,6 +18,7 @@ echo "ARTIFACT_NAME     = $ARTIFACT_NAME"
 echo "Exiting on any error"
 set -e
 
+# fails with exit code 128
 echo "Create tag ${GITHUB_RELEASE}"
 git tag ${GITHUB_RELEASE}
 
@@ -48,10 +59,12 @@ if [ $UPLOADED == '"uploaded"' ];then
 else
   echo "upload failed"
   cat assetuploadresponse.json
-  echo 200
+  exit 200
 fi
 
 echo
 echo "Removing create release json command file and response file"
 rm json.json response.json
 echo "Job Complete"
+
+exit 0
