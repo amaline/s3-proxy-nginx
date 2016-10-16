@@ -5,12 +5,12 @@ machine:
     NXAUTHMODULEREP: https://github.com/amaline/ngx_aws_auth.git
     GITHUB_PROJECT: amaline/s3-proxy-nginx
     PROJECT_REPOSITORY: github.com/amaline/s3-proxy-nginx.git
-    GITHUB_RELEASE: 0.1
+    GITHUB_RELEASE: 0.2
     ARTIFACT_NAME: nginx-s3-tgz
 
 dependencies:
    override:
-    - sudo apt-get -y install curl build-essential libpcre3 libpcre3-dev zlib1g-dev libssl-dev  
+    - sudo apt-get -y install curl build-essential libpcre3 libpcre3-dev zlib1g-dev libssl-dev jq
     - curl -LO ${NXURL}
     - tar zxf nginx-${NXVERSION}.tar.gz 
     - cd nginx-${NXVERSION} && git clone ${NXAUTHMODULEREP} 
