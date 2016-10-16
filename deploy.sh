@@ -14,8 +14,8 @@ git tag ${GITHUB_RELEASE}
 echo "Push tag to github repository ${GITHUB_PROJECT}"
 git push https://${GITHUB_TOKEN}@${PROJECT_REPOSITORY} --tags
 
-echo "Sleep 15 seconds for api to recognize tag because eventual consistancy I think... [race condition]"
-sleep 15
+echo "Sleep 30 seconds for api to recognize tag because eventual consistancy I think... [race condition]"
+sleep 30
 
 echo "Creating release..."
 

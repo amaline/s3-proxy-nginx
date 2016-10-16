@@ -5,8 +5,8 @@ machine:
     NXAUTHMODULEREP: https://github.com/amaline/ngx_aws_auth.git
     GITHUB_PROJECT: amaline/s3-proxy-nginx
     PROJECT_REPOSITORY: github.com/amaline/s3-proxy-nginx.git
-    GITHUB_RELEASE: v0.3
-    ARTIFACT_NAME: nginx-s3-tgz
+    GITHUB_RELEASE: v0.4
+    ARTIFACT_NAME: nginx-s3.tgz
 
 dependencies:
    override:
