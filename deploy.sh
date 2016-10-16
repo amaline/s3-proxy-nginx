@@ -40,7 +40,7 @@ echo
 echo "Upload ${CIRCLE_ARTIFACTS}/${ARTIFACT_NAME} to github release ${GITHUB_RELEASE} ID=${RELEASE_ID}"
 echo
 
-curl -# -XPOST -H "Authorization: bearer ${GITHUB_TOKEN}" -H "Content-Type: application/octet-stream" --data-binary @${CIRCLE_ARTIFACTS}/${ARTIFACT_NAME} https://uploads.github.com/repos/${GITHUB_PROJECT}/releases/${RELEASE_ID}/assets?name=${ASSET_NAME} -o assetuploadresponse.json
+curl -# -XPOST -H "Authorization: bearer ${GITHUB_TOKEN}" -H "Content-Type: application/octet-stream" --data-binary @${CIRCLE_ARTIFACTS}/${ARTIFACT_NAME} https://uploads.github.com/repos/${GITHUB_PROJECT}/releases/${RELEASE_ID}/assets?name=${ARTIFACT_NAME} -o assetuploadresponse.json
 
 UPLOADED=`cat assetuploadresponse.json | jq '.state'`
 if [ $UPLOADED == '"uploaded"' ];then
