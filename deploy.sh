@@ -3,7 +3,7 @@ echo "GITHUB_PROJECT    = $GITHUB_PROJECT"
 echo "GITHUB_RELEASE    = $GITHUB_RELEASE"
 echo "PROJECT_REPOSITORY= $PROJECT_REPOSITORY"
 echo "CIRCLE_ARTIFACTS  = $CIRCLE_ARTIFACTS"
-echo "ASSET_NAME        = $ASSET_NAME"
+echo "ARTIFACT_NAME     = $ARTIFACT_NAME"
 
 echo "Exiting on any error"
 set -e
@@ -37,12 +37,20 @@ then
 fi
 
 echo
-echo "Upload ${CIRCLE_ARTIFACTS}/${ASSET_NAME} to github release ${GITHUB_RELEASE} ID=${RELEASE_ID}"
+echo "Upload ${CIRCLE_ARTIFACTS}/${ARTIFACT_NAME} to github release ${GITHUB_RELEASE} ID=${RELEASE_ID}"
 echo
 
-curl -# -XPOST -H "Authorization: bearer ${GITHUB_TOKEN}" -H "Content-Type: application/octet-stream" --data-binary @${CIRCLE_ARTIFACTS}/${ASSET_NAME} https://uploads.github.com/repos/${GITHUB_PROJECT}/releases/${RELEASE_ID}/assets?name=${ASSET_NAME}
+curl -# -XPOST -H "Authorization: bearer ${GITHUB_TOKEN}" -H "Content-Type: application/octet-stream" --data-binary @${CIRCLE_ARTIFACTS}/${ARTIFACT_NAME} https://uploads.github.com/repos/${GITHUB_PROJECT}/releases/${RELEASE_ID}/assets?name=${ASSET_NAME} -o assetuploadresponse.json
 
-echo
+UPLOADED=`cat assetuploadresponse.json | jq '.state'`
+if [ $UPLOADED == '"uploaded"' ];then
+  echo "asset uploaded"
+else
+  echo "upload failed"
+  cat assetuploadresponse.json
+  echo 200
+fi
+
 echo
 echo "Removing create release json command file and response file"
 rm json.json response.json
