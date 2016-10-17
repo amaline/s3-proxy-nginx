@@ -5,7 +5,7 @@ machine:
     NXAUTHMODULEREP: https://github.com/amaline/ngx_aws_auth.git
     GITHUB_PROJECT: amaline/s3-proxy-nginx
     PROJECT_REPOSITORY: github.com/amaline/s3-proxy-nginx.git
-    GITHUB_RELEASE: v0.6
+    GITHUB_RELEASE: v0.7
     ARTIFACT_NAME: nginx-s3.tgz
 
 dependencies:
@@ -17,7 +17,7 @@ dependencies:
     - curl -LO ${NXURL}
     - tar zxf nginx-${NXVERSION}.tar.gz 
     - cd nginx-${NXVERSION} && git clone ${NXAUTHMODULEREP} 
-    - cd nginx-${NXVERSION} && ./configure --with-http_ssl_module --add-module=ngx_aws_auth
+    - cd nginx-${NXVERSION} && ./configure --with-http_ssl_module --with-http_realip_module --with-http_gunzip_module --with-http_gzip_static_module --with-http_auth_request_module --with-http_random_index_module --with-http_secure_link_module --with-http_stub_status_module --without-http_uwsgi_module --without-http_scgi_module --with-pcre --with-pcre-jit --add-module=ngx_aws_auth
     - cd nginx-${NXVERSION} && make 
     - mkdir nginx && mkdir nginx/conf && mkdir nginx/logs && mkdir nginx/sbin 
     - cp nginx-${NXVERSION}/objs/nginx nginx/sbin
