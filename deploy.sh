@@ -45,6 +45,10 @@ if [ "$RELEASE_ID" == "null" ]
 then
    echo -n "ERROR: No Release ID returned.  Returned message="
    cat response.json |jq '.errors[0].message'
+   echo "\n---------- response.json -----------"
+   cat response.json
+   echo "\n----------- json.json ---------------"
+   cat json.json
    exit 100
 fi
 

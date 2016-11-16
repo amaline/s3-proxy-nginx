@@ -6,7 +6,7 @@ machine:
     NXAUTHMODULEBRANCH: enc-bug-fix
     GITHUB_PROJECT: amaline/s3-proxy-nginx
     PROJECT_REPOSITORY: github.com/amaline/s3-proxy-nginx.git
-    GITHUB_RELEASE: v0.8.1
+    GITHUB_RELEASE: v0.8.2
     GITHUB_RELEASE_NOTE: This release includes the encoding bug fix that was causing files with spaces to fail
     ARTIFACT_NAME: nginx-s3.tgz
 
