@@ -32,7 +32,7 @@ sleep 15
 echo "Creating release..."
 MD5SUM=$(md5sum ${CIRCLE_ARTIFACTS}/$ARTIFACT_NAME)
 echo "  build create release json"
-echo -e "{\n\"tag_name\": \"${GITHUB_RELEASE}\",\n\"target_commitish\": \"master\",\n\"name\": \"release ${GITHUB_RELEASE} for custom nginx build\",\n\"body\": \"release ${GITHUB_RELEASE} for custom nginx build for cloud foundry s3 proxy.\n- md5 checksum: ${MD5SUM}\n- ${GITHUB_RELEASE_NOTE}\n\",\"draft\": false,\n\"prerelease\": false\n}" > json.json
+echo -e "{\n\"tag_name\": \"${GITHUB_RELEASE}\",\n\"target_commitish\": \"master\",\n\"name\": \"release ${GITHUB_RELEASE} for custom nginx build\",\n\"body\": \"release ${GITHUB_RELEASE} for custom nginx build for cloud foundry s3 proxy.<br />  - md5 checksum: ${MD5SUM}<br />  - ${GITHUB_RELEASE_NOTE}\n\",\"draft\": false,\n\"prerelease\": false\n}" > json.json
 
 echo "  issuing command to github to create release"
 curl -# -XPOST -H 'Content-Type:application/json' -H 'Accept:application/json' --data-binary @json.json https://api.github.com/repos/${GITHUB_PROJECT}/releases?access_token=${GITHUB_TOKEN} -o response.json
