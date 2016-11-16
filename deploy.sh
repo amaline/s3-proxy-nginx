@@ -30,7 +30,7 @@ echo "Sleep 15 seconds for api to recognize tag because eventual consistancy I t
 sleep 15
 
 echo "Creating release..."
-MD5SUM=$(md5sum ${CIRCLE_ARTIFACTS}/$ARTIFACT_NAME)
+MD5SUM=$(md5sum ${CIRCLE_ARTIFACTS}/$ARTIFACT_NAME | awk '{print $1}')
 echo "  build create release json"
 echo -e "{\n\"tag_name\": \"${GITHUB_RELEASE}\",\n\"target_commitish\": \"master\",\n\"name\": \"release ${GITHUB_RELEASE} for custom nginx build\",\n\"body\": \"release ${GITHUB_RELEASE} for custom nginx build for cloud foundry s3 proxy.<br />  - md5 checksum: ${MD5SUM}<br />  - ${GITHUB_RELEASE_NOTE}\",\"draft\": false,\n\"prerelease\": false\n}" > json.json
 
