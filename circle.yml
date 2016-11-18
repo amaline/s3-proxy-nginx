@@ -6,8 +6,8 @@ machine:
     NXAUTHMODULEBRANCH: enc-bug-fix
     GITHUB_PROJECT: amaline/s3-proxy-nginx
     PROJECT_REPOSITORY: github.com/amaline/s3-proxy-nginx.git
-    GITHUB_RELEASE: v0.8.5
-    GITHUB_RELEASE_NOTE: This release includes the encoding bug fix that was causing files with spaces to fail
+    GITHUB_RELEASE: v0.8.6
+    GITHUB_RELEASE_NOTE: This release compiles nginx with the webdav module
     ARTIFACT_NAME: nginx-s3.tgz
 
 dependencies:
@@ -20,7 +20,7 @@ dependencies:
     - tar zxf nginx-${NXVERSION}.tar.gz 
     - cd nginx-${NXVERSION} && git clone ${NXAUTHMODULEREP} 
     - cd nginx-${NXVERSION}/ngx_aws_auth && git checkout ${NXAUTHMODULEBRANCH}
-    - cd nginx-${NXVERSION} && ./configure --with-http_ssl_module --with-http_realip_module --with-http_gunzip_module --with-http_gzip_static_module --with-http_auth_request_module --with-http_random_index_module --with-http_secure_link_module --with-http_stub_status_module --without-http_uwsgi_module --without-http_scgi_module --with-pcre --with-pcre-jit --add-module=ngx_aws_auth
+    - cd nginx-${NXVERSION} && ./configure --with-http_ssl_module --with-http_realip_module --with-http_gunzip_module --with-http_gzip_static_module --with-http_auth_request_module --with-http_random_index_module --with-http_secure_link_module --with-http_stub_status_module --without-http_uwsgi_module --without-http_scgi_module --with-pcre --with-pcre-jit --with-http_dav_module --add-module=ngx_aws_auth
     - cd nginx-${NXVERSION} && make 
     - mkdir nginx && mkdir nginx/conf && mkdir nginx/logs && mkdir nginx/sbin 
     - cp nginx-${NXVERSION}/objs/nginx nginx/sbin
