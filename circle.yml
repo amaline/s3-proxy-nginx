@@ -2,12 +2,12 @@ machine:
   environment:
     NXVERSION: 1.11.4
     NXURL: http://nginx.org/download/nginx-1.11.4.tar.gz
-    NXAUTHMODULEREP: https://github.com/amaline/ngx_aws_auth.git
-    NXAUTHMODULEBRANCH: enc-bug-fix
+    NXAUTHMODULEREP: https://github.com/anomalizer/ngx_aws_auth
+    NXAUTHMODULEBRANCH: master
     GITHUB_PROJECT: amaline/s3-proxy-nginx
     PROJECT_REPOSITORY: github.com/amaline/s3-proxy-nginx.git
-    GITHUB_RELEASE: v0.8.6
-    GITHUB_RELEASE_NOTE: This release compiles nginx with the webdav module
+    GITHUB_RELEASE: v0.8.7
+    GITHUB_RELEASE_NOTE: This release compiles nginx with the webdav module.  It switches back to the master branch of https://github.com/anomalizer/ngx_aws_auth
     ARTIFACT_NAME: nginx-s3.tgz
 
 dependencies:
